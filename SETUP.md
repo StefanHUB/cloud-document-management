@@ -22,7 +22,7 @@ You need to install these on your computer first:
 
 ---
 
-## Option A: Run Locally (Simplest — No Docker needed)
+## Option A: Run Locally 
 
 Open TWO terminal windows:
 
@@ -50,7 +50,7 @@ You should see the login page. Use the demo credentials:
 
 ---
 
-## Option B: Run with Docker (Shows DevOps skills)
+## Option B: Run with Docker
 
 ```bash
 cd cloud-doc-management
