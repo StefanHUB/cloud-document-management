@@ -19,11 +19,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - STORAGE_BACKEND=local
-      - AUTH_SECRET=production-secret-change-me
+      - STORAGE_BACKEND=gcs
+      - GCS_BUCKET_NAME=doc-management-demo
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
     volumes:
       - backend-uploads:/app/uploads
-      - backend-db:/app/data
+      - C:/Users/vorni/Downloads/weighty-disk-504909-u8-6e5c1975c16f.json:/app/credentials.json:ro
     restart: unless-stopped
 
   frontend:
@@ -39,4 +40,3 @@ services:
 
 volumes:
   backend-uploads:
-  backend-db:
