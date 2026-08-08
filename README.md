@@ -221,9 +221,8 @@ cloud-doc-management/
 
 ## Generative AI Usage Declaration
 
-This project was developed with assistance from Perplexity Computer (AI assistant) for:
-- Code generation and debugging
+This project was developed with AI assistance for:
 - Architecture design and documentation
 - Code comments and justifications
 
-All AI-assisted code has been reviewed and tested.
+

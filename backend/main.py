@@ -285,9 +285,13 @@ async def download_document(
     doc = get_document(doc_id)
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
-
+    
     storage = get_storage()
-    file_data = storage.download(doc["file_path"])
+    # Use gcs_blob_name for GCS storage, file_path for local storage
+    if doc.get("gcs_blob_name"):
+        file_data = storage.download(doc["gcs_blob_name"])
+    else:
+        file_data = storage.download(doc["file_path"])
 
     return StreamingResponse(
         io.BytesIO(file_data),
