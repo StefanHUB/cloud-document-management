@@ -34,6 +34,7 @@ jobs:
         run: |
           cd backend
           pip install -r requirements.txt
+          pip install httpx
 
       - name: Run smoke test (import all modules)
         run: |
