@@ -1,0 +1,139 @@
+/* Cloud Document Management System - Custom Styles */
+
+:root {
+    --primary-custom: #2563eb;
+    --success-custom: #16a34a;
+    --dark-custom: #1e293b;
+}
+
+.bg-primary-custom {
+    background-color: var(--primary-custom) !important;
+}
+
+body {
+    background-color: #f1f5f9;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+/* Stats cards */
+.stat-card {
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* Region cards */
+#costCard, #carbonCard {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#costCard:hover, #carbonCard:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.region-active {
+    border-width: 3px !important;
+    background-color: #f0fdf4;
+}
+
+/* Document table */
+.doc-table {
+    width: 100%;
+}
+
+.doc-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+}
+
+.doc-status-pending {
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.doc-status-approved {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.doc-status-rejected {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/* Region badge */
+.region-badge {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background-color: #e0e7ff;
+    color: #4338ca;
+}
+
+.region-badge-carbon {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* Alert animations */
+.alert {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 15px;
+    }
+    .stat-number {
+        font-size: 1.25rem;
+    }
+}

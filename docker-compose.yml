@@ -1,0 +1,42 @@
+# Docker Compose configuration for Cloud Document Management System
+# Runs frontend and backend as separate containers
+#
+# Usage:
+#   docker compose up --build
+#
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:8000
+# Swagger docs: http://localhost:8000/docs
+
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: docmgmt-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - STORAGE_BACKEND=local
+      - AUTH_SECRET=production-secret-change-me
+    volumes:
+      - backend-uploads:/app/uploads
+      - backend-db:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: docmgmt-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-uploads:
+  backend-db:

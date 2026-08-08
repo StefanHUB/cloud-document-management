@@ -1,0 +1,107 @@
+# CI/CD Pipeline for Cloud Document Management System
+# This workflow runs on every push and pull request to main branch.
+# It validates the backend Python code and frontend structure.
+#
+# DevOps Justification:
+# CI/CD pipelines automate testing and validation, ensuring code quality
+# before deployment. This reduces integration issues and enables
+# continuous delivery of the document management system.
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Backend validation: install dependencies and run smoke tests
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run smoke test (import all modules)
+        run: |
+          cd backend
+          python -c "from main import app; print('Backend imports OK')"
+          python -c "from regions import get_all_regions; print(f'{len(get_all_regions())} regions loaded')"
+          python -c "from storage import get_storage; print('Storage adapter OK')"
+          python -c "from auth import authenticate; print('Auth module OK')"
+
+      - name: Run API tests
+        run: |
+          cd backend
+          python -c "
+          from main import app
+          from fastapi.testclient import TestClient
+          client = TestClient(app)
+
+          # Health check
+          assert client.get('/health').status_code == 200
+
+          # Login
+          r = client.post('/auth/login', json={'username': 'manager_user', 'password': 'manager123'})
+          assert r.status_code == 200
+          token = r.json()['token']
+
+          # Regions
+          r = client.get('/regions')
+          assert r.status_code == 200
+          assert len(r.json()['regions']) > 0
+
+          # Upload document
+          r = client.post('/documents/upload',
+              headers={'Authorization': f'Bearer {token}'},
+              data={'title': 'CI Test', 'region_mode': 'carbon'},
+              files={'file': ('test.pdf', b'content', 'application/pdf')})
+          assert r.status_code == 200
+
+          print('All API tests passed!')
+          "
+
+  # Frontend validation: check file structure
+  frontend-test:
+    name: Frontend Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate frontend files
+        run: |
+          test -f frontend/src/index.html
+          test -f frontend/src/css/style.css
+          test -f frontend/src/js/app.js
+          test -f frontend/serve.py
+          echo "Frontend files validated successfully"
+
+  # Docker build validation
+  docker-build:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: docker build -t docmgmt-backend ./backend
+
+      - name: Build frontend Docker image
+        run: docker build -t docmgmt-frontend ./frontend
